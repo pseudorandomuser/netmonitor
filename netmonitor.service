@@ -1,0 +1,11 @@
+[Unit]
+Description=Network Monitor
+After=network-online.target
+[Service]
+Type=simple
+User=administrator
+WorkingDirectory=/opt/netmonitor
+ExecStart=/usr/bin/python3 -m netmonitor
+
+[Install]
+WantedBy=multi-user.target
