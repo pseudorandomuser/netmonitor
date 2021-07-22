@@ -1,0 +1,11 @@
+{
+    "pushover_user_key": "",
+    "pushover_token_key": "",
+    "netmonitor.monitors.pingmonitor.PingMonitor": {
+        "delay": 3,
+        "host_list": [
+            "192.168.0.1",
+            "192.168.0.2"
+        ]
+    }
+}
