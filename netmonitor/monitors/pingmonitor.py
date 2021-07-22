@@ -29,7 +29,8 @@ class PingMonitor(Monitor):
             host_addr
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         ping_output: str = ping_proc.communicate()[0].decode('UTF-8')
-        ping_search: Optional[re.Match] = re.search('=(.*) ms', ping_output)
+        ping_search: Optional[re.Match] = re.search(
+            'time=(.*) ms', ping_output)
         ping_latency: float = 0
         if ping_search is not None:
             ping_groups: Sequence[Any] = ping_search.groups()
