@@ -5,10 +5,10 @@ import logging
 from logging import Logger
 from typing import Any, Dict, List
 
+from netmonitor.notifiers import *
+
 from netmonitor import monitors
 from netmonitor.monitors.monitor import Monitor
-
-from netmonitor.notifiers import *
 
 
 def main(*args: Any, **kwargs: Any) -> bool:
@@ -23,15 +23,24 @@ def main(*args: Any, **kwargs: Any) -> bool:
     pushover_token_key = kwargs.get('pushover_token_key')
     
     for _, attribute in monitors.__dict__.items():
-        if isinstance(attribute, type) and issubclass(attribute, Monitor) and not issubclass(Monitor, attribute):
-            logger.debug(f'Starting module: "{attribute.__name__}"...')
-            monitor_arguments: Dict[str, Any] = kwargs.get(f'{attribute.__module__}.{attribute.__name__}', {})
+        if (isinstance(attribute, type) and issubclass(attribute, Monitor) 
+                and not issubclass(Monitor, attribute)):
+            logger.debug(f'Starting monitor: "{attribute.__name__}"...')
+            monitor_arguments: Dict[str, Any] = \
+                kwargs.get(f'{attribute.__module__}.{attribute.__name__}', {})
             monitor_title: str = f'Network Monitor ({attribute.__name__})'
             if pushover_user_key and pushover_token_key:
-                monitor_notifier: Notifier = Pushover(user=pushover_user_key, token=pushover_token_key, title=monitor_title)
+                monitor_notifier: Notifier = Pushover(
+                    user=pushover_user_key, 
+                    token=pushover_token_key, 
+                    title=monitor_title
+                )
             else:
                 monitor_notifier = Terminal(title=monitor_title)
-            current_monitor: Monitor = attribute(notifier=monitor_notifier, **monitor_arguments) # type: ignore
+            current_monitor: Monitor = attribute(
+                notifier=monitor_notifier, 
+                **monitor_arguments
+            ) # type: ignore
             monitor_threads.append(current_monitor)
             current_monitor.start()
 

@@ -11,7 +11,8 @@ class Pushover(Terminal):
         self._user = user
         self._token = token
         self._logger = logging.getLogger(self.__class__.__name__)
-        self._logger.debug(f'Created Pushover notifier "{title}" with app token "{token}" and user token "{user}"')
+        self._logger.debug(f'Created Pushover notifier "{title}" '
+            f'with app token "{token}" and user token "{user}"')
 
     def notify(self, message: str) -> bool:
         super().notify(message)
@@ -21,5 +22,8 @@ class Pushover(Terminal):
             'message': message,
             'title': self.title
         }
-        pushover_request = requests.post('https://api.pushover.net/1/messages.json', data=pushover_data)
+        pushover_request = requests.post(
+            'https://api.pushover.net/1/messages.json', 
+            data=pushover_data
+        )
         return pushover_request.status_code == 200

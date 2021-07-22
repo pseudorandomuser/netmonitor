@@ -17,7 +17,8 @@ class Monitor(Thread, metaclass=ABCMeta):
         self._kwargs: Dict[str, Any] = kwargs
         self._delay: int = self.kwargs.get('delay', 300)
         self._logger: Logger = logging.getLogger(self.__class__.__name__)
-        self._notifier: Notifier = self.kwargs.get('notifier', Terminal(title=self.__class__.__name__))
+        self._notifier: Notifier = self.kwargs.get('notifier',
+            Terminal(title=self.__class__.__name__))
 
     def run(self) -> None:
         self._logger.debug(f'Running module...')

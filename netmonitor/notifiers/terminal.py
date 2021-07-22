@@ -11,5 +11,6 @@ class Terminal(Notifier):
         self._logger: Logger = logging.getLogger(self.__class__.__name__)
 
     def notify(self, message: str) -> bool:
-        self._logger.info(f'Notifier: Title: {self.title}, Message: {message}')
+        self._logger.info(f'Notifier: Title: {self.title}, '
+            f'Message: {message}')
         return True
